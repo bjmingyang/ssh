@@ -36,6 +36,7 @@ while {1} {
             set timeout -1
         } -re "successful" {
             exit
+#用于修改drac密码，添加sshkey 到drac
         } -re "admin1" {
            send "racadm sshpkauth -i 2 -k 4 -t \"ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEArXjgcZPuB2uN6j1/X/qnyJdIw2zfPln6j1a5p1hx6YFAfPhywtkMncbZ7xmQL4GSK+TvOrTpWzSUWFfG0j7Oz4bfYTjbBhywgZ8UASDAifLycX+4eBBKVOVvlSZBlMRk0Ah2+hTBJlMxtowiM0/dibiqqeW8Qb1Z4ehgl6j0BGJtEj9wfNwwdHZZPElP5Ix2grzZVkJOPwo9RZiFHcLGNL97H1vPJd99KQGkFdGZoYslfbUFFEyhijxit4+Zo0FIhZ5SM2mUW64zOrhvwVXWkDS5srqeX41xOidrZJDQXLYzVAmHOt8YFunY4qmtj7l4Hjyp6kdotQU+JuUSON9t3Q== root@adm01t.daodao.com\"\r"
            set timeout -1
