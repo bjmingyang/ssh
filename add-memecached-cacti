@@ -1,0 +1,118 @@
+#use host name add to cacti
+#读取IP列表
+
+
+
+#11211
+node=192
+
+#host_ips=`cat baitu.hosts.list`
+cli_path=/var/www/cacti/cli/
+host_ips=`cat 11211`
+path1="--input-fields="port=11211" --force"
+
+
+for host_ip in $host_ips
+do
+#添加cacti设备
+
+##php "$cli_path"add_device.php --description="$host_ip" --ip="$host_ip" --template=12 --version=2 --community="public"
+
+#读取设备ID
+host_ids=`php "$cli_path"add_graphs.php --list-hosts |grep $host_ip |awk -F " " '{print $1}'`
+
+
+##创建memory cache
+tree1=`php -q "$cli_path"add_graphs.php --host-id="$host_ids" --graph-type=cg --graph-template-id=173 --graph-title="|host_description| - Memcached  - Bytes Used -- 11211" $path1|awk -F" " '{print substr($5,2,4)  }'`
+##add to tree
+#####tree id list
+###11211###
+#192-197
+###11211####
+#198-203
+###11411
+##204-209
+###11511
+###954-959
+###11611
+###766,767,771,768,769,770
+###11711
+###977-982
+###11811
+###984-989
+###11911
+###991-996
+###11321
+##998-1003
+php -q $cli_path"add_tree.php" --type=node --node-type=graph --tree-id=2 --parent-node=$node  --graph-id=$tree1
+
+tree2=`php -q "$cli_path"add_graphs.php --host-id="$host_ids" --graph-type=cg --graph-template-id=174 --graph-title="|host_description| - Memcached  - Cache Hits and Misses -- 11211"  $path1|awk -F" " '{print substr($5,2,4)  }'`
+php -q $cli_path"add_tree.php" --type=node --node-type=graph --tree-id=2 --parent-node=$(expr $node + 1)  --graph-id=$tree2
+
+tree3=`php -q "$cli_path"add_graphs.php --host-id="$host_ids" --graph-type=cg --graph-template-id=175 --graph-title="|host_description| - Memcached  - Current Connections -- 11211" $path1 |awk -F" " '{print substr($5,2,4)  }'`
+php -q $cli_path"add_tree.php" --type=node --node-type=graph --tree-id=2 --parent-node=$(expr $node + 2)  --graph-id=$tree3
+
+tree4=`php -q "$cli_path"add_graphs.php --host-id="$host_ids" --graph-type=cg --graph-template-id=176 --graph-title="|host_description| - Memcached  - Items Cached -- 11211" $path1 |awk -F" " '{print substr($5,2,4)  }'`
+php -q $cli_path"add_tree.php" --type=node --node-type=graph --tree-id=2 --parent-node=$(expr $node + 3)  --graph-id=$tree4
+
+tree5=`php -q "$cli_path"add_graphs.php --host-id="$host_ids" --graph-type=cg --graph-template-id=177 --graph-title="|host_description| - Memcached  - Network Traffic \(bits/sec\) -- 11211" $path1|awk -F" " '{print substr($5,2,4)  }'`
+php -q $cli_path"add_tree.php" --type=node --node-type=graph --tree-id=2 --parent-node=$(expr $node + 4)  --graph-id=$tree5
+tree6=`php -q "$cli_path"add_graphs.php --host-id="$host_ids" --graph-type=cg --graph-template-id=178 --graph-title="|host_description| - Memcached  - Memcached - Requests/sec \(get/set\) --11211 " $path1 |awk -F" " '{print substr($5,2,4)  }'`
+php -q $cli_path"add_tree.php" --type=node --node-type=graph --tree-id=2 --parent-node=$(expr $node + 5)  --graph-id=$tree6
+
+
+
+
+
+####
+
+####173	Memcached - Bytes Used - Multiport
+####174	Memcached - Cache Hits and Misses - Multiport
+####175	Memcached - Current Connections - Multiport
+####176	Memcached - Items Cached - Multiport
+####177	Memcached - Network Traffic (bits/sec) - Multiport
+####178	Memcached - Requests/sec (get/set) - Multiport
+##baitu
+
+#Header	183	182	port 11211	Manual Ordering (No Sorting)
+#Header	192	183	Memcached Bytes Used	Alphabetic Ordering
+#Header	193	183	Memcached Cache Hits and Misses	Alphabetic Ordering
+#Header	194	183	Memcached Current Connections	Alphabetic Ordering
+#Header	195	183	Memcached Items Cached	Alphabetic Ordering
+#Header	196	183	Memcached Network Traffic	Alphabetic Ordering
+#Header	197	183	Memcached Requests/sec (get/set)	Alphabetic Ordering
+#Header	184	182	port 11211	Manual Ordering (No Sorting)
+#Header	198	184	Memcached Bytes Used	Alphabetic Ordering
+#Header	199	184	Memcached Cache Hits and Misses	Alphabetic Ordering
+#Header	200	184	Memcached Current Connections	Alphabetic Ordering
+#Header	201	184	Memcached Items Cached	Alphabetic Ordering
+#Header	202	184	Memcached Network Traffic	Alphabetic Ordering
+#Header	203	184	Memcached Requests/sec (get/set)	Alphabetic Ordering
+#Header	185	182	port 11411	Manual Ordering (No Sorting)
+#Header	204	185	Memcached Bytes Used	Alphabetic Ordering
+#Header	205	185	Memcached Cache Hits and Misses	Alphabetic Ordering
+#Header	206	185	Memcached Current Connections	Alphabetic Ordering
+#Header	207	185	Memcached Items Cached	Alphabetic Ordering
+#Header	208	185	Memcached Network Traffic	Alphabetic Ordering
+#Header	209	185	Memcached Requests/sec (get/set)	Alphabetic Ordering
+#Header	953	182	port 11511	Manual Ordering (No Sorting)
+#Header	954	953	Memcached Bytes Used	Manual Ordering (No Sorting)
+#Header	955	953	Memcached Cache Hits and Misses	Manual Ordering (No Sorting)
+#Header	956	953	Memcached Current Connections	Manual Ordering (No Sorting)
+#Header	957	953	Memcached Items Cached	Manual Ordering (No Sorting)
+#Header	958	953	Memcached Network Traffic	Manual Ordering (No Sorting)
+#Header	959	953	Memcached Requests/sec (get/set)	Manual Ordering (No Sorting)
+#Header	765	182	port 11611	Manual Ordering (No Sorting)
+#Header	766	765	Memcached Bytes Used	Manual Ordering (No Sorting)
+#Header	767	765	Memcached Cache Hits and Misses	Manual Ordering (No Sorting)
+#Header	771	765	Memcached Current Connections	Manual Ordering (No Sorting)
+#Header	768	765	Memcached Items Cached	Manual Ordering (No Sorting)
+#Header	769	765	Memcached Network Traffic	Manual Ordering (No Sorting)
+#Header	770	765	Memcached Requests/sec (get/set)	Manual Ordering (No Sorting)
+#Header	970	182	port 11711	Manual Ordering (No Sorting)
+
+tree=2
+baitu=8
+#添加设备到相应的组
+#php "$cli_path"add_tree.php --host-id="$host_ids" --type=node --node-type=host --tree-id=$tree --parent-node=$baitu
+done
