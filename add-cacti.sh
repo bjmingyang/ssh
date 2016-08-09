@@ -37,20 +37,21 @@ php "$cli_path"add_graphs.php --host-id="$host_ids" --graph-type=ds --graph-temp
 php "$cli_path"add_graphs.php --host-id="$host_ids" --graph-type=ds --graph-template-id=3 --snmp-query-id=8 --snmp-query-type-id=18 --snmp-field=hrStorageDescr --snmp-value="/disk2"
 php "$cli_path"add_graphs.php --host-id="$host_ids" --graph-type=ds --graph-template-id=3 --snmp-query-id=8 --snmp-query-type-id=18 --snmp-field=hrStorageDescr --snmp-value="/disk3"
 #create memcache images
-memcache_port=`echo 11{}11`
-for i in memcache_port
+memcache_port=`echo 11211 11321 11611 11911`
+for x in $memcache_port
 do
-$path_port="--input-fields="port=$memcache_port" --force "
-php -q $cli_path"add_graphs.php  --host-id=$i --graph-type=cg --graph-template-id=174 --graph-title="|host_description| - Memcached  - Cache Hits and Misses -- 11311"  $path_port
-php -q $cli_path"add_graphs.php  --host-id=$i --graph-type=cg --graph-template-id=175 --graph-title="|host_description| - Memcached  - Current Connections -- 11311" $path_port
-php -q $cli_path"add_graphs.php  --host-id=$i --graph-type=cg --graph-template-id=176 --graph-title="|host_description| - Memcached  - Items Cached -- 11311" $path_port
-php -q $cli_path"add_graphs.php  --host-id=$i --graph-type=cg --graph-template-id=177 --graph-title="|host_description| - Memcached  - Network Traffic (bits/sec) -- 11311" $path_port
-php -q $cli_path"add_graphs.php  --host-id=$i --graph-type=cg --graph-template-id=178 --graph-title="|host_description| - Memcached  - Memcached - Requests/sec (get/set) --11311 " $path_port
-
-
+ path_port="--input-fields=port=$x --force"
+echo $x
+php  "$cli_path"add_graphs.php  --host-id=$host_ids --graph-type=cg --graph-template-id=174 --graph-title="|host_description| - Memcached  - Cache Hits and Misses -- $x"  $path_port
+php  "$cli_path"add_graphs.php  --host-id=$host_ids --graph-type=cg --graph-template-id=175 --graph-title="|host_description| - Memcached  - Current Connections -- $x" $path_port
+php  "$cli_path"add_graphs.php  --host-id=$host_ids --graph-type=cg --graph-template-id=176 --graph-title="|host_description| - Memcached  - Items Cached -- $x" $path_port
+php  "$cli_path"add_graphs.php  --host-id=$host_ids --graph-type=cg --graph-template-id=177 --graph-title="|host_description| - Memcached  - Network Traffic \(bits/sec\) -- $x" $path_port
+php  "$cli_path"add_graphs.php  --host-id=$host_ids --graph-type=cg --graph-template-id=178 --graph-title="|host_description| - Memcached  - Memcached - Requests/sec \(get/set\) -- $x " $path_port
+done
+#
 #
 tree=2
 web=16
 #添加设备到相应的组
-#php "$cli_path"add_tree.php --host-id="$host_ids" --type=node --node-type=host --tree-id=$tree --parent-node=$web
+php "$cli_path"add_tree.php --host-id="$host_ids" --type=node --node-type=host --tree-id=$tree --parent-node=$web
 done
