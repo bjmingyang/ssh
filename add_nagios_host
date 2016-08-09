@@ -1,0 +1,16 @@
+for i  in `echo web{01..10}c`
+do
+cat >> /etc/nagios/etc/hosts/web/hosts1 << EOF
+define host {
+        host_name               $i
+        alias                   $i
+        address                 $i
+        contact_groups          sagroup
+        check_command           check-host-alive
+        max_check_attempts      5
+        notification_interval   10
+        notification_period     24x7
+        notification_options    d,u,r
+}
+EOF
+done
