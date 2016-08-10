@@ -1,0 +1,25 @@
+hdnum=`cat /proc/partitions|awk -F" " '{print $4}'|grep sd|cut -c 1-3|sort -u|wc -l`
+
+if  [ $hdnum -le 1 ] ; then
+    echo '--only-use=sda' > /tmp/disk
+else
+   if  [ $hdnum == 2 ] ; then
+    echo 'ignoredisk --drives=sdb'  > /tmp/disk
+else
+   if  [ $hdnum == 3 ] ; then
+    echo 'ignoredisk --drives=sdb,sdc'  > /tmp/disk
+else
+   if  [ $hdnum == 4 ] ; then
+    echo 'ignoredisk --drives=sdb,sdc,sdd'  > /tmp/disk
+else
+   if  [ $hdnum == 5 ] ; then
+    echo 'ignoredisk --drives=sdb,sdc,sdd,sde'  > /tmp/disk
+else
+   if  [ $hdnum == 6 ] ; then
+    echo 'ignoredisk --drives=sdb,sdc,sdd,sde,sdf'  > /tmp/disk
+fi
+fi
+fi
+fi
+fi
+fi
