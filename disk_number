@@ -1,7 +1,7 @@
 hdnum=`cat /proc/partitions|awk -F" " '{print $4}'|grep sd|cut -c 1-3|sort -u|wc -l`
 
 if  [ $hdnum -le 1 ] ; then
-    echo '--only-use=sda' > /tmp/disk
+    echo 'ignoredisk --only-use=sda' > /tmp/disk
 else
    if  [ $hdnum == 2 ] ; then
     echo 'ignoredisk --drives=sdb'  > /tmp/disk
