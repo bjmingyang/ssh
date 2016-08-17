@@ -1,5 +1,6 @@
-hd=`cat /proc/partitions|awk -F" " '{print $4}'|grep sd|cut -c 1-3|sort -u`
-
-#if  [ $hdnum -le 1 ] ; then
-    echo ignoredisk --only-use=$hd > /tmp/disk
-#fi
+hddevice=`cat /proc/partitions|awk -F" " '{print $4}'|grep sd|cut -c 1-3|sort -u`
+hd=`echo $hddevice|cut -c 1-2`
+if [ $hd == sd ] ; then
+dd if=/dev/zero of=/dev/$hddevice count=10 bs=1M
+echo ignoredisk --only-use=$hddevice > /tmp/disk
+fi
