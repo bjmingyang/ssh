@@ -1,0 +1,4 @@
+for i in `ls ./`
+do echo $i
+ldapmodify -h 127.0.0.1 -x -D "cn=Manager,dc=daodao,dc=com" -w daodao -f $i
+done
