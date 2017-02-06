@@ -1,0 +1,25 @@
+uid=1000
+for i in `cat uid.txt`
+do
+echo "
+dn: uid=$i,ou=people,dc=daodao,dc=com
+changetype: modify
+add:objectClass
+objectClass:posixAccount
+-
+add: homeDirectory
+homeDirectory: /home/$i
+-
+add: loginShell
+loginShell: /bin/bash
+-
+add: uidNumber
+uidNumber: $uid
+-
+add: gidNumber
+gidNumber: 100" > $i.ldif
+uid=`expr $uid + 1`
+
+#echo $z
+
+done
